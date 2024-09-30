@@ -37,14 +37,7 @@
         if(!inputAge.value.trim()){
             errors.push('Age is required')
         } else {
-            const ageDate = new Date(inputAge.value); 
-            const today = new Date();
-            let age = today.getFullYear() - ageDate.getFullYear(); 
-            const m = today.getMonth() - ageDate.getMonth();
-
-            if (m < 0 || (m === 0 && today.getDate() < ageDate.getDate())) {
-                age--;
-            }
+            const ageDate = new Date(inputAge.value)
 
             if( ageDate < new Date(1900, 0, 1) || ageDate > new Date()){
                 errors.push('Invalid age')
@@ -54,6 +47,7 @@
             errors.push('Year of study is required')
         } else {
             const yearStudy = new Date(inputYearStudy.value);
+            
             if(yearStudy < new Date(2000, 0, 1) || yearStudy > new Date()) {
                 errors.push('Invalid year of study');
             }
@@ -70,9 +64,53 @@
                 errorMessages.appendChild(p)
             });
         } else {
+            const ageDate = new Date(inputAge.value); 
+            const today = new Date();
+            let age = today.getFullYear() - ageDate.getFullYear(); 
+            const m = today.getMonth() - ageDate.getMonth();
+
+            if (m < 0 || (m === 0 && today.getDate() < ageDate.getDate())) {
+                age--;
+            }
+
+            // const studyYear = new Date(inputYearStudy.value);
+            // const roundingUpYear = today.getFullYear() - studyYear.getFullYear();  
+            // const yearStudy = `${studyYear.getFullYear()}-${today.getFullYear()}`
+            // let coursNumber;
+            // if(roundingUpYear > 4) {
+            //     coursNumber = 'закончил'
+            // } else {
+            //     coursNumber = `${Math.floor((today.getFullYear() - parseInt(inputYearStudy.value)))}`
+            // }
+            
+            const studyYear = new Date(inputYearStudy.value);
+            const startYear = studyYear.getFullYear();
+            const startMonth = studyYear.getMonth();
+            let courseYear;
+
+            if (startMonth < 8) { 
+                courseYear = startYear;
+            } else {
+                courseYear = startYear + 1;
+            }
+
+            const yearStudy = `${courseYear}-${courseYear + 4}`;
+            let courseNumber;
+            const endDate = new Date(`${courseYear + 4}-09-01`);
+
+            if (endDate < today) {
+                courseNumber = 'закончил';
+            } else {
+                courseNumber = `${Math.floor((today.getFullYear() - courseYear) ) + 1}`;
+            }
+
+
+
+
+            
             const div = document.createElement('div');
             div.classList.add('card');
-            const h3 = document.createElement('h3');
+            const h3 = document.createElement('h2');
             h3.classList.add('card-title');
             const p = document.createElement('p');
             p.classList.add('card-date');
@@ -84,9 +122,9 @@
             div.style.border = '1.5px solid white';
 
             h3.textContent = `${inputName.value} ${inputSurname.value} ${inputPatronymic.value}`;
-            p.textContent = `Age: ${inputAge.value} (${age} лет)`;
-            pStudy.textContent = `Year of study: ${inputYearStudy.value}`;
-            faculty.textContent = `Faculty: ${inputFaculty.value}`;
+            p.textContent = `Дата рождения: ${inputAge.value} (${age} лет)`;
+            pStudy.textContent = `Начало обучения: ${yearStudy} (${courseNumber} курс) `;
+            faculty.textContent = `Факультет: ${inputFaculty.value}`;
             div.appendChild(h3);
             div.appendChild(p);
             div.appendChild(pStudy);
