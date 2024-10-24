@@ -4,13 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href=
+            "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" 
+          rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <script defer src="main.js"></script>
+
+    <!-- Bootstrap JS (Optional if you need dropdowns or other features) -->
+    <script src=
+            "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js">
+    </script>
+    <script defer src="prototip.js"></script>
 </head>
 <body>
-    <div class="container-wrapper">
+    <div class="container-wrapper flex">
         <div class="container">
-            <form class="student-form">
+            <form class="student-form flex">
                 <label for="name">Name</label>
                 <input type="text" class="inputName inp" id="name">
                 <label for="surname">Surname</label>
@@ -18,20 +26,63 @@
                 <label for="patrnymic">Patronymic</label>
                 <input type="text" class="inputPatronymic inp" id="patronymic">
                 <label for="age">Age</label>
-                <input type="date" class="inputAge inp" id="age">
+                <input type="date" class="inputAge inp" id="age" min="1900-01-01" max="">
                 <label for="yearStudy">Year Study</label>
                 <input type="date" class="inputYearStudy inp" id="yearStudy">
                 <label for="faculty">Faculty</label>
                 <input type="number" class="inputFaculty inp" id="faculty" min="0" max="5">
-                <button class="btn">Добавить студента</button>
+                <button type="button" class="btn btn-success">Success</button>
                 <div class="error-messages"></div>
             </form>
         </div>
         <div class="container-card_students">
-    
+            <div class="text-center 
+                    py-3 mb-4 
+                    border-bottom">
+                <h1 style="color: green;">
+                    Список студентов
+                </h1>
+                <form class="filtres mb-3" id="filter-form">
+                    <!-- <label for="filter-surname">Фамилия</label> -->
+                    <input type="text" id="filter-surname" class="form-control" placeholder="ФИО поиск">
+                    <!-- <label for="filter-start-year">Год начала обучения</label> -->
+                    <input type="number" id="filter-start-year" class="form-control" placeholder="начало обучение">
+                    <!-- <label for="filter-end-year">Год окончания обучения</label> -->
+                    <input type="number" id="filter-end-year" class="form-control" placeholder="конец обучения">
+                    <!-- <label for="filter-faculty">Факультету</label> -->
+                    <input type="number" id="filter-faculty" class="form-control" placeholder="факультет">
+                    
+                </form>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped 
+                            table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Index</th>
+                            <th id="surname-header" class="surname-header-cl">Last Name</th>
+                            <th>First Name</th>
+                            <th>Patronymic</th>
+                            <th id="age-header">Age</th>
+                            <th id="enrolled-header">Enrolled</th>
+                            <th id="faculty-header">Faculty</th>
+                        </tr>
+                    </thead>
+                    <tbody id="student-table-body">
+                        <tr>
+                            <td>1</td>
+                            <td>Mishra</td>
+                            <td>Rahul</td>
+                            <td>Sergeevich</td>
+                            <td>21-05-2003</td>
+                            <td>2019-2023(закончил)</td>
+                            <td>1</td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
         </div>
-
     </div>
-    
 </body>
 </html> 
