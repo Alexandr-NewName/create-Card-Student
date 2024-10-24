@@ -7,6 +7,7 @@
     const inputFaculty = document.querySelector('.inputFaculty');
 
     let studentId = 2
+    let students = []
 
     function renderStudent(student) {
         return `
@@ -172,6 +173,62 @@
         })
         tableFaculty.innerHTML = '';
         sortRows.forEach(row => tableFaculty.appendChild(row))
+    })
+
+    function filter(arr, prop, value) {
+        let result = [];
+        for (const item of arr) {
+            if(String(item[prop].toLowerCase().includes(value.toLowerCase()))) {
+                result.push(item)
+        }
+        return result
+        }
+    }
+
+    function render(arr) {
+        const tableBody = document.querySelector('#student-table-body')
+        tableBody.innerHTML = ''
+        for ( const user of arr) {
+            const tr = document.createElement('tr')
+            tr.innerHTML = `
+                <td>${user.iduser}</td>
+                <td>${user.surname}</td>
+                <td>${user.name}</td>
+                <td>${user.patronymic}</td>
+                <td>${user.ageInput} (${student.age} лет)</td>
+                <td>${user.trainingYear}</td>
+                <td>${user.faculty}</td>`
+            tableBody.appendChild(tr)
+        }
+    }
+
+    document.getElementById('filter-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const filterSurname = document.getElementById('filter-surname').value.trim();
+        const filterStartYear = document.getElementById('filter-start-year').value.trim();
+        const filterEndYear = document.getElementById('filter-end-year').value.trim();
+        const filterFaculty = document.getElementById('filter-faculty').value.trim();
+
+        let filterStudents = students;
+        if(filterSurname){
+            filterStudents = filter(filterStudents, 'surname', filterSurname)
+        }
+        if(filterFaculty){
+            filterStudents = filter(filterStudents, 'faculty', filterFaculty)
+        }
+        if(filterStartYear){
+            filterStudents = filterStudents.filter( student => {
+                const startYear = parseInt(student.trainingYear.split('-')[0]);
+                return startYear >= filterStartYear; 
+            })
+        }
+        if(filterEndYear){
+            filterStudents = filterStudents.filter( student => {
+                const endYear = parseInt(student.trainingYear.split('-')[1]);
+                return endYear <= filterEndYear;
+            })
+        }
+        render(filterStudents)
     })
 
     getStudent()
