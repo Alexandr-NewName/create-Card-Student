@@ -6,8 +6,8 @@
     const inputYearStudy = document.querySelector('.inputYearStudy');
     const inputFaculty = document.querySelector('.inputFaculty');
 
-    let studentId = 2
-    let students = []
+    let studentId = 4
+    // let students = []
 
     function renderStudent(student) {
         return `
@@ -175,60 +175,34 @@
         sortRows.forEach(row => tableFaculty.appendChild(row))
     })
 
-    function filter(arr, prop, value) {
-        let result = [];
-        for (const item of arr) {
-            if(String(item[prop].toLowerCase().includes(value.toLowerCase()))) {
-                result.push(item)
-        }
-        return result
-        }
-    }
-
-    function render(arr) {
-        const tableBody = document.querySelector('#student-table-body')
-        tableBody.innerHTML = ''
-        for ( const user of arr) {
-            const tr = document.createElement('tr')
-            tr.innerHTML = `
-                <td>${user.iduser}</td>
-                <td>${user.surname}</td>
-                <td>${user.name}</td>
-                <td>${user.patronymic}</td>
-                <td>${user.ageInput} (${student.age} лет)</td>
-                <td>${user.trainingYear}</td>
-                <td>${user.faculty}</td>`
-            tableBody.appendChild(tr)
-        }
-    }
-
-    document.getElementById('filter-form').addEventListener('submit', function(e) {
+    const btnFilter = document.querySelector('.filter-button')
+    btnFilter.addEventListener('click', (e) => {
         e.preventDefault();
-        const filterSurname = document.getElementById('filter-surname').value.trim();
-        const filterStartYear = document.getElementById('filter-start-year').value.trim();
-        const filterEndYear = document.getElementById('filter-end-year').value.trim();
-        const filterFaculty = document.getElementById('filter-faculty').value.trim();
+        const filterSurname = document.getElementById('filter-surname').value.toLowerCase().trim();
+        const filterStartYear = parseInt(document.getElementById('filter-start-year').value);
+        const filterEndYear = parseInt(document.getElementById('filter-end-year').value);
+        const filterFaculty = document.getElementById('filter-faculty').value.toLowerCase().trim();
+        const tabelBody = document.getElementById('student-table-body');
+        const row = Array.from(tabelBody.querySelectorAll('tr'));
 
-        let filterStudents = students;
-        if(filterSurname){
-            filterStudents = filter(filterStudents, 'surname', filterSurname)
-        }
-        if(filterFaculty){
-            filterStudents = filter(filterStudents, 'faculty', filterFaculty)
-        }
-        if(filterStartYear){
-            filterStudents = filterStudents.filter( student => {
-                const startYear = parseInt(student.trainingYear.split('-')[0]);
-                return startYear >= filterStartYear; 
-            })
-        }
-        if(filterEndYear){
-            filterStudents = filterStudents.filter( student => {
-                const endYear = parseInt(student.trainingYear.split('-')[1]);
-                return endYear <= filterEndYear;
-            })
-        }
-        render(filterStudents)
+        // const filterSur = filterSurname.value.toLowerCase().trim();
+        row.forEach(row => {
+            const surnameCell = row.cells[1].textContent.toLowerCase();
+            const startYearCell = parseInt(row.cells[5].textContent.split('-')[0]);
+            const endYearCell = parseInt(row.cells[5].textContent.split('-')[1]);
+            const facultyCell = row.cells[6].textContent.toLowerCase();
+
+            const matchesSurname = filterSurname === '' || surnameCell.includes(filterSurname);
+            const matchesStartYear = isNaN(filterStartYear) || startYearCell === filterStartYear;
+            const machesEndYear = isNaN(filterEndYear) || endYearCell === filterEndYear;
+            const machesFaculty = filterFaculty === '' || facultyCell.includes(filterFaculty);
+            
+            if(matchesSurname && matchesStartYear && machesEndYear && machesFaculty){
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        })
     })
 
     getStudent()

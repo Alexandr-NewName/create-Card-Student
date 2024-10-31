@@ -74,9 +74,28 @@ button {
     flex-wrap: wrap;
     justify-content: center;
     margin-top: 30px;
+    position: relative;
 }
 
 .form-control {
     width: calc(100% / 5);
     margin-right: 30px;
+}
+
+.filter-button {
+    width: 200px;
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    position: absolute;
+    top: 40px;
+    left: 745px;
+}
+
+.border-bottom {
+    all: initial;
+}
+
+.table-responsive {
+    margin-top: 80px;
 }
