@@ -184,8 +184,7 @@
         const filterFaculty = document.getElementById('filter-faculty').value.toLowerCase().trim();
         const tabelBody = document.getElementById('student-table-body');
         const row = Array.from(tabelBody.querySelectorAll('tr'));
-
-        // const filterSur = filterSurname.value.toLowerCase().trim();
+        
         row.forEach(row => {
             const surnameCell = row.cells[1].textContent.toLowerCase();
             const startYearCell = parseInt(row.cells[5].textContent.split('-')[0]);
