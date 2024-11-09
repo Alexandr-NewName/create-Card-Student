@@ -21,6 +21,24 @@
                 <td>${student.faculty}</td>
             </tr>`
     }
+
+    function seveData() {
+        const data = {
+            id: studentId,
+            surname: inputSurname.value,
+            name: inputName.value,
+            patronymic: inputPatronymic.value,
+            ageInput: inputAge.value,
+            trainingYear: inputYearStudy.value,
+            faculty: inputFaculty.value
+        }
+
+        seveToDB(data)
+        renderTable()
+        clearInputs()
+        studentId++
+        
+    }
     
     function getStudent() {
         const tableBody = document.querySelector('tbody');
@@ -123,6 +141,7 @@
                 inputFaculty.value = '';
                 errorMessages.innerHTML = '';
             }
+            
         })
         
     }
