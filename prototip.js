@@ -21,6 +21,46 @@
                 <td>${student.faculty}</td>
             </tr>`
     }
+
+    function saveToLocalStorage(student) {
+        let students = JSON.parse(localStorage.getItem('students')) || [];
+        students.push(student);
+        localStorage.setItem('students', JSON.stringify(students))
+    }
+    function loadFromLocalStorage() {
+        const students = JSON.parse(localStorage.getItem('students')) || []
+        const tbody = document.querySelector('tbody')
+        students.forEach(student => {
+            tabelBody.innerHTML += renderStudent(student);
+            studentId = Math.max(studentId, student.id + 1)
+        })
+    }
+    function clearInputs() {
+        inputName.value = '';
+        inputSurname.value = '';
+        inputPatronymic.value = '';
+        inputAge.value = '';
+        inputYearStudy.value = '';
+        inputFaculty.value = '';
+    }
+
+    function saveData() {
+        const data = {
+            id: studentId,
+            surname: inputSurname.value,
+            name: inputName.value,
+            patronymic: inputPatronymic.value,
+            ageInput: inputAge.value,
+            trainingYear: inputYearStudy.value,
+            faculty: inputFaculty.value
+        }
+
+        saveToLocalStorage(data)
+        renderTable()
+        clearInputs()
+        studentId++
+        
+    }
     
     function getStudent() {
         const tableBody = document.querySelector('tbody');
@@ -113,16 +153,12 @@
 
                 const studentHtml = renderStudent(student)
                 tableBody.innerHTML += studentHtml;
+                saveToLocalStorage(student)
                 studentId++;
-
-                inputName.value = '';
-                inputSurname.value = '';
-                inputPatronymic.value = '';
-                inputAge.value = '';
-                inputYearStudy.value = '';
-                inputFaculty.value = '';
+                clearInputs();
                 errorMessages.innerHTML = '';
             }
+            
         })
         
     }
@@ -204,7 +240,8 @@
             }
         })
     })
-
+    window.onload = loadFromLocalStorage;
     getStudent()
 })()
+
 
