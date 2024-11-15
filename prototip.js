@@ -7,8 +7,9 @@
     const inputFaculty = document.querySelector('.inputFaculty');
 
     let studentId = 4
-    // let students = []
-
+    let students = []
+    let LS = localStorage
+    const form = document.querySelector('form')
     function renderStudent(student) {
         return `
             <tr>
@@ -20,6 +21,18 @@
                 <td>${student.trainingYear}</td>
                 <td>${student.faculty}</td>
             </tr>`
+    }
+
+    function loadStudents(){
+        const storedStudents = LS.getItem('students');
+        if(storedStudents){
+            students.forEach(student => {
+                students = JSON.parse(storedStudents)
+                const studentHtml = renderStudent(student);
+                document.querySelector('tbody').innerHTML += studentHtml;
+                studentId = Math.max(studentId, student.id + 1)
+            })
+        }
     }
     
     function getStudent() {
@@ -111,6 +124,9 @@
                     faculty
                 };
 
+                students.push(student);
+                LS.setItem('students', JSON.stringify(students));
+
                 const studentHtml = renderStudent(student)
                 tableBody.innerHTML += studentHtml;
                 studentId++;
@@ -184,8 +200,7 @@
         const filterFaculty = document.getElementById('filter-faculty').value.toLowerCase().trim();
         const tabelBody = document.getElementById('student-table-body');
         const row = Array.from(tabelBody.querySelectorAll('tr'));
-
-        // const filterSur = filterSurname.value.toLowerCase().trim();
+        
         row.forEach(row => {
             const surnameCell = row.cells[1].textContent.toLowerCase();
             const startYearCell = parseInt(row.cells[5].textContent.split('-')[0]);
@@ -205,6 +220,10 @@
         })
     })
 
+
+
+
+    loadStudents()
     getStudent()
 })()
 
