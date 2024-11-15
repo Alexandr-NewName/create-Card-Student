@@ -7,8 +7,9 @@
     const inputFaculty = document.querySelector('.inputFaculty');
 
     let studentId = 4
-    // let students = []
-
+    let students = []
+    let LS = localStorage
+    const form = document.querySelector('form')
     function renderStudent(student) {
         return `
             <tr>
@@ -20,6 +21,18 @@
                 <td>${student.trainingYear}</td>
                 <td>${student.faculty}</td>
             </tr>`
+    }
+
+    function loadStudents(){
+        const storedStudents = LS.getItem('students');
+        if(storedStudents){
+            students.forEach(student => {
+                students = JSON.parse(storedStudents)
+                const studentHtml = renderStudent(student);
+                document.querySelector('tbody').innerHTML += studentHtml;
+                studentId = Math.max(studentId, student.id + 1)
+            })
+        }
     }
     
     function getStudent() {
@@ -110,6 +123,9 @@
                     trainingYear,
                     faculty
                 };
+
+                students.push(student);
+                LS.setItem('students', JSON.stringify(students));
 
                 const studentHtml = renderStudent(student)
                 tableBody.innerHTML += studentHtml;
@@ -204,6 +220,10 @@
         })
     })
 
+
+
+
+    loadStudents()
     getStudent()
 })()
 
